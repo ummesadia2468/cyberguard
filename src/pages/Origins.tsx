@@ -1,0 +1,4 @@
+import { Head } from '../components/Table'
+const O=[['Russia','185.220.101.4',84],['China','117.21.173.9',61],['Brazil','177.54.150.2',47],['United States','45.33.32.156',39],['Iran','5.160.218.7',28],['India','103.21.244.0',19]] as const
+export default function Origins(){return <><Head t="Attack origins" s="Sample source regions for blocked traffic. Demo data until the backend reports geolocation."/>
+ <ul className="nc divide-y max-w-3xl">{O.map(([c,ip,n])=><li key={c} className="p-4"><div className="flex justify-between text-sm"><span>{c}</span><span className="font-mono text-xs text-muted">{ip} · {n} attacks</span></div><div className="h-1.5 bg-[var(--bg-elev)] rounded mt-3"><div className="h-full rounded bg-[#D65CEB] shadow-[0_0_10px_#D65CEB]" style={{width:`${n}%`}}/></div></li>)}</ul></>}

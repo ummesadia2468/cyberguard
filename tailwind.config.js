@@ -1,0 +1,3 @@
+export default {content:['./index.html','./src/**/*.{ts,tsx}'],theme:{extend:{
+fontFamily:{serif:['"Instrument Serif"','serif'],sans:['"Plus Jakarta Sans"','sans-serif'],mono:['"JetBrains Mono"','monospace']},
+colors:{bg:'var(--bg-primary)',side:'var(--bg-side)','side-text':'var(--side-text)','side-muted':'var(--side-muted)','side-dim':'var(--side-dim)','side-hover':'var(--side-hover)','side-active':'var(--side-active)','side-active-ink':'var(--side-active-ink)',surface:'var(--bg-surface)',elev:'var(--bg-elev)',ink:'var(--text-primary)',muted:'var(--text-muted)',dim:'var(--text-dim)',accent:'var(--neon)',bronze:'var(--bronze)',ok:'var(--status-ok)',bad:'var(--status-bad)',info:'#38BDF8',line:'var(--border-subtle)'}}},plugins:[]}

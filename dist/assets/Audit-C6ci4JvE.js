@@ -1,0 +1,1 @@
+import{u as o,j as t}from"./index-B0sDxJRJ.js";import{H as i,T as n}from"./Table-Cx-yppIm.js";function u(){const{audit:e}=o();return t.jsxs(t.Fragment,{children:[t.jsx(i,{t:"Audit log",s:"Actions taken in this workspace, newest first."}),t.jsx(n,{rows:e,cols:[{h:"Time",f:s=>new Date(s.t).toLocaleString(),mono:!0},{h:"Action",f:s=>s.msg}]})]})}export{u as default};

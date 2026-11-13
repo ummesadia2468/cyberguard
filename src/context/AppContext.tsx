@@ -4,7 +4,7 @@ import type { SecurityEvent, Stats } from '../types/security'
 export interface Notif{id:string;msg:string;t:string;read:boolean}
 export interface Audit{t:string;msg:string}
 export type Theme='dark'|'light'
-interface Ctx{events:SecurityEvent[];stats:Stats|null;mode:api.Mode;refresh:()=>Promise<void>;refreshing:boolean;refreshError:string|null;lastUpdated:Date|null;theme:Theme;toggleTheme:()=>void;toast:string|null;notify:(m:string)=>void;authed:boolean;login:()=>void;logout:()=>void;notifs:Notif[];setNotifs:(f:(n:Notif[])=>Notif[])=>void;audit:Audit[];log:(m:string)=>void}
+interface Ctx{events:SecurityEvent[];stats:Stats|null;mode:api.Mode;refresh:()=>Promise<void>;refreshing:boolean;refreshError:string|null;lastUpdated:Date|null;theme:Theme;toggleTheme:()=>void;toast:string|null;notify:(m:string)=>void;authed:boolean;login:(identity?:string)=>void;logout:()=>void;notifs:Notif[];setNotifs:(f:(n:Notif[])=>Notif[])=>void;audit:Audit[];log:(m:string)=>void}
 const C=createContext<Ctx>(null!)
 export const useApp=()=>useContext(C)
 const ls=<T,>(k:string,d:T):T=>{try{return JSON.parse(localStorage.getItem(k)||'')}catch{return d}}
@@ -28,4 +28,4 @@ export function AppProvider({children}:{children:ReactNode}){
   }catch(error){setRefreshError(error instanceof Error?`Unable to refresh telemetry: ${error.message}`:'Unable to refresh telemetry. Please try again.')}
   finally{setRefreshing(false)}},[notify])
  useEffect(()=>{if(!authed)return;refresh();const i=setInterval(refresh,Number(localStorage.getItem('cg_poll'))||8000);return()=>clearInterval(i)},[authed,refresh])
- return <C.Provider value={{events,stats,mode,refresh,refreshing,refreshError,lastUpdated,theme,toggleTheme:()=>setTheme(current=>current==='dark'?'light':'dark'),toast,notify,authed,login:()=>{localStorage.setItem('cg_token','demo-'+Date.now());setAuthed(true);log('Signed in')},logout:()=>{localStorage.removeItem('cg_token');setAuthed(false)},notifs,setNotifs:setN,audit,log}}>{children}</C.Provider>}
+ return <C.Provider value={{events,stats,mode,refresh,refreshing,refreshError,lastUpdated,theme,toggleTheme:()=>setTheme(current=>current==='dark'?'light':'dark'),toast,notify,authed,login:(identity)=>{localStorage.setItem('cg_token','demo-'+Date.now());setAuthed(true);log(identity?`Signed in as ${identity}`:'Signed in')},logout:()=>{localStorage.removeItem('cg_token');setAuthed(false)},notifs,setNotifs:setN,audit,log}}>{children}</C.Provider>}

@@ -5,4 +5,12 @@ import App from './App'
 import { AppProvider } from './context/AppContext'
 import './index.css'
 document.documentElement.dataset.theme=localStorage.getItem('cg_theme')==='light'?'light':'dark'
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><BrowserRouter><AppProvider><App/></AppProvider></BrowserRouter></React.StrictMode>)
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <AppProvider>
+        <App />
+      </AppProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
+)

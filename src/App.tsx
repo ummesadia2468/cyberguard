@@ -27,7 +27,7 @@ export default function App(){
   const timer=window.setTimeout(()=>setShowIntro(false),1450)
   return ()=>window.clearTimeout(timer)
  },[reduceMotion])
- return <><Suspense fallback={<div role="status" className="flex min-h-[40vh] items-center justify-center text-sm text-muted">Loading page…</div>}><Routes><Route path="/login" element={<Login/>}/>
+ return <><Suspense fallback={<div role="status" className="flex min-h-[40vh] items-center justify-center text-sm text-muted">Loading page…</div>}><Routes><Route path="/login" element={<Login/>}/><Route path="/signup" element={<Login/>}/>
 <Route element={<Protected><Layout/></Protected>}><Route path="/" element={<Dashboard/>}/><Route path="/monitoring" element={<Monitoring/>}/><Route path="/incidents" element={<Incidents/>}/><Route path="/simulation-lab" element={<Simulation/>}/><Route path="/users" element={<Users/>}/><Route path="/endpoints" element={<Endpoints/>}/><Route path="/origins" element={<Origins/>}/><Route path="/recommendations" element={<Recommendations/>}/><Route path="/agents" element={<Agents/>}/><Route path="/policies" element={<Policies/>}/><Route path="/playground" element={<Playground/>}/><Route path="/reports" element={<Reports/>}/><Route path="/audit" element={<Audit/>}/><Route path="/notifications" element={<Notifications/>}/><Route path="/settings" element={<Settings/>}/></Route>
 <Route path="*" element={<Navigate to="/" replace/>}/></Routes></Suspense>
  <AnimatePresence>

@@ -14,12 +14,12 @@ export default function Monitoring(){
  const rows=events.filter(event=>(tab==='All'||event.status===tab)&&JSON.stringify(event).toLowerCase().includes(query.toLowerCase()))
 
  return <div className="space-y-8">
-  <h1 className="font-serif text-5xl">Threat monitoring</h1>
+  <h1 className="break-words font-serif text-3xl sm:text-4xl lg:text-5xl">Threat monitoring</h1>
   <div className="flex flex-wrap justify-between gap-4">
-   <div className="flex gap-1" role="group" aria-label="Filter requests by status">
-    {tabs.map(status=><button key={status} aria-pressed={tab===status} onClick={()=>setTab(status)} className={`rounded-[3px] px-3 py-1.5 text-sm ${tab===status?'btn font-semibold':'text-muted'}`}>{status}</button>)}
+   <div className="flex min-w-0 flex-wrap gap-1" role="group" aria-label="Filter requests by status">
+    {tabs.map(status=><button key={status} aria-pressed={tab===status} onClick={()=>setTab(status)} className={`rounded-[3px] px-2 py-1.5 text-sm sm:px-3 ${tab===status?'btn font-semibold':'text-muted'}`}>{status}</button>)}
    </div>
-   <input aria-label="Search requests" placeholder="Search user, endpoint or incident" value={query} onChange={event=>setQuery(event.target.value)} className="w-72 border-b bg-transparent py-1 text-sm outline-none focus:border-accent"/>
+   <input aria-label="Search requests" placeholder="Search user, endpoint or incident" value={query} onChange={event=>setQuery(event.target.value)} className="w-full max-w-full border-b bg-transparent py-1 text-sm outline-none focus:border-accent sm:w-72"/>
   </div>
   <div className="overflow-x-auto border">
    <table className="w-full text-left text-sm">

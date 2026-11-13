@@ -48,8 +48,8 @@ function Hero3D({reducedMotion=false}:{reducedMotion?:boolean}){
  const mouseX=useMotionValue(0),mouseY=useMotionValue(0)
  const rotateY=useSpring(useTransform(mouseX,[-.5,.5],[-28,28]),{stiffness:60,damping:14})
  const rotateX=useSpring(useTransform(mouseY,[-.5,.5],[22,-22]),{stiffness:60,damping:14})
- return <div className="relative flex h-[340px] items-center justify-center" onMouseMove={reducedMotion?undefined:event=>{const bounds=event.currentTarget.getBoundingClientRect();mouseX.set((event.clientX-bounds.left)/bounds.width-.5);mouseY.set((event.clientY-bounds.top)/bounds.height-.5)}} onMouseLeave={reducedMotion?undefined:()=>{mouseX.set(0);mouseY.set(0)}}>
-  <div className="scene"><motion.div className="stage" style={{rotateX:reducedMotion?0:rotateX,rotateY:reducedMotion?0:rotateY}}>
+ return <div className="relative flex h-[280px] items-center justify-center sm:h-[340px]" onMouseMove={reducedMotion?undefined:event=>{const bounds=event.currentTarget.getBoundingClientRect();mouseX.set((event.clientX-bounds.left)/bounds.width-.5);mouseY.set((event.clientY-bounds.top)/bounds.height-.5)}} onMouseLeave={reducedMotion?undefined:()=>{mouseX.set(0);mouseY.set(0)}}>
+  <div className="scene scale-[.68] sm:scale-90 xl:scale-100"><motion.div className="stage" style={{rotateX:reducedMotion?0:rotateX,rotateY:reducedMotion?0:rotateY}}>
    {[[230,'ringA 9s linear infinite'],[300,'ringB 13s linear infinite'],[360,'ringA 20s linear infinite reverse']].map(([size,animation])=><div key={size as number} className="ring" style={{width:size as number,height:size as number,margin:`-${(size as number)/2}px 0 0 -${(size as number)/2}px`,animation:animation as string}}/>)}
    <div className="cube">{[1,2,3,4,5,6].map(face=><div key={face} className={`face f${face}`}><ShieldCheck size={44} strokeWidth={1.2}/></div>)}</div><div className="core"/>
   </motion.div></div>
@@ -79,11 +79,11 @@ export default function Dashboard(){
  const itemVariants=reducedMotion?{hidden:{opacity:1},visible:{opacity:1}}:{hidden:{opacity:0,y:8},visible:{opacity:1,y:0,transition:{duration:.35,ease:'easeOut'}}}
 
  return <div className="space-y-8" style={{perspective:1400}}>
-  <motion.section initial={reducedMotion?false:{opacity:0,scale:.985,y:12}} animate={{opacity:1,scale:1,y:0}} transition={{duration:reducedMotion?0:.55,ease:'easeOut'}} className="nc relative grid items-center overflow-hidden px-6 py-7 md:px-10 lg:grid-cols-[1.1fr_1fr]">
+  <motion.section initial={reducedMotion?false:{opacity:0,scale:.985,y:12}} animate={{opacity:1,scale:1,y:0}} transition={{duration:reducedMotion?0:.55,ease:'easeOut'}} className="nc relative grid min-w-0 items-center overflow-hidden px-4 py-6 sm:px-6 sm:py-7 md:px-10 lg:grid-cols-[1.1fr_1fr]">
    <div aria-hidden="true" className="gridbg absolute inset-0"/><div aria-hidden="true" className="scanline"/>
    <div className="relative z-10">
     <div className="text-sm text-muted">{new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</div>
-    <h1 className="mt-2 font-serif text-5xl leading-[1.02] md:text-7xl">{greeting},<br/>analyst.</h1>
+    <h1 className="mt-2 font-serif text-4xl leading-[1.02] sm:text-5xl md:text-7xl">{greeting},<br/>analyst.</h1>
     <svg aria-hidden="true" viewBox="0 0 260 14" className="mt-1 w-64" fill="none"><path d="M3 9 C40 2 70 14 110 7 S190 3 257 9" stroke="#F59E0B" strokeWidth="3" strokeLinecap="round"><animate attributeName="stroke-dasharray" from="0 300" to="300 0" dur="1.4s" fill="freeze"/></path></svg>
     <p className="mt-5 max-w-md text-muted">Your defenders have blocked <b className="text-ink">{stats?.blocked_attacks.toLocaleString()??'—'}</b> attacks. Flagged events are available for human review.</p>
     <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -93,18 +93,18 @@ export default function Dashboard(){
     {refreshError&&<p role="alert" className="mt-3 text-sm text-red-300">{refreshError}</p>}
     {lastUpdated&&mode==='DEMO TELEMETRY'&&<p role="status" className="mt-3 max-w-md rounded-lg border border-amber-400/30 bg-amber-400/5 px-3 py-2 text-xs text-bronze">Demo telemetry is active. These values are sample data, not live backend data.</p>}
    </div>
-   <div className="relative z-10">
+   <div className="relative z-10 min-w-0">
     <Hero3D reducedMotion={!!reducedMotion}/>
-    <div className="sticker absolute right-2 top-4 rounded-lg bg-[#F59E0B] px-4 py-2 text-sm font-bold text-[#1A1124] shadow-[0_6px_0_#7a4f06,0_0_30px_rgba(245,158,11,.4)]">{blockRate===null?'—':`${blockRate}%`} threats blocked</div>
+    <div className="sticker absolute right-1 top-2 rounded-lg bg-[#F59E0B] px-2.5 py-1.5 text-xs font-bold text-[#1A1124] shadow-[0_6px_0_#7a4f06,0_0_30px_rgba(245,158,11,.4)] sm:right-2 sm:top-4 sm:px-4 sm:py-2 sm:text-sm">{blockRate===null?'—':`${blockRate}%`} threats blocked</div>
    </div>
   </motion.section>
 
   <motion.div initial={reducedMotion?false:'hidden'} animate="visible" variants={groupVariants} className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" style={{perspective:1200}}>
-   {kpis.map(([label,value],index)=><Tilt key={label} reducedMotion={!!reducedMotion}><div className="text-sm text-muted">{label}</div><div className={`mt-3 font-serif ${index===0?'text-5xl':'text-4xl'} ${index===3?'text-accent':''}`}>{stats?<Counter value={value??0}/>:<span aria-label="Waiting for telemetry">—</span>}</div></Tilt>)}
+   {kpis.map(([label,value],index)=><Tilt key={label} reducedMotion={!!reducedMotion}><div className="text-sm text-muted">{label}</div><div className={`mt-3 break-words font-serif ${index===0?'text-4xl sm:text-5xl':'text-3xl sm:text-4xl'} ${index===3?'text-accent':''}`}>{stats?<Counter value={value??0}/>:<span aria-label="Waiting for telemetry">—</span>}</div></Tilt>)}
   </motion.div>
 
-  <motion.div initial={reducedMotion?false:'hidden'} animate="visible" variants={groupVariants} className="grid gap-6 lg:grid-cols-[3fr_2fr]">
-   <motion.section variants={revealVariants} className="nc p-5 md:p-6">
+  <motion.div initial={reducedMotion?false:'hidden'} animate="visible" variants={groupVariants} className="grid min-w-0 gap-6 lg:grid-cols-[3fr_2fr]">
+   <motion.section variants={revealVariants} className="nc min-w-0 p-4 sm:p-5 md:p-6">
     <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
      <div><h2 className="font-serif text-2xl">Threat activity</h2><p className="mt-1 text-xs text-muted">Detected and blocked events · {rangeLabel}</p></div>
      <label className="sr-only" htmlFor="activity-range">Threat activity time range</label>
@@ -112,20 +112,20 @@ export default function Dashboard(){
     </div>
     {activity.some(point=>point.threats>0)?<div className="h-64"><ResponsiveContainer><AreaChart data={activity}><CartesianGrid stroke="var(--border-subtle)" vertical={false}/><XAxis dataKey="t" stroke="var(--text-muted)" fontSize={11}/><YAxis allowDecimals={false} stroke="var(--text-muted)" fontSize={11}/><Tooltip contentStyle={tooltipStyle}/><Area name="Detected" dataKey="threats" stroke="var(--bronze)" fill="var(--bronze)" fillOpacity={.12} strokeWidth={1.5} isAnimationActive={!reducedMotion} animationDuration={900} animationEasing="ease-out"/><Area name="Blocked" dataKey="blocked" stroke="var(--neon)" fill="var(--neon)" fillOpacity={.18} strokeWidth={1.5} isAnimationActive={!reducedMotion} animationDuration={900} animationEasing="ease-out"/></AreaChart></ResponsiveContainer></div>:<div className="flex h-64 items-center justify-center text-center text-sm text-muted">No detected threat activity in the {rangeLabel}.</div>}
    </motion.section>
-   <motion.section variants={revealVariants} className="nc p-5 md:p-6">
+   <motion.section variants={revealVariants} className="nc min-w-0 p-4 sm:p-5 md:p-6">
     <h2 className="mb-4 font-serif text-2xl">Threat distribution</h2>
     {distribution.length?<div className="h-64"><ResponsiveContainer><BarChart data={distribution} layout="vertical"><XAxis type="number" allowDecimals={false} stroke="var(--text-muted)" fontSize={11}/><YAxis type="category" dataKey="name" width={110} stroke="var(--text-muted)" fontSize={11}/><Tooltip contentStyle={tooltipStyle}/><Bar name="Events" dataKey="count" fill="var(--neon)" barSize={10} isAnimationActive={!reducedMotion} animationDuration={900} animationEasing="ease-out"/></BarChart></ResponsiveContainer></div>:<div className="flex h-64 items-center justify-center text-center text-sm text-muted">No threat events to display.</div>}
    </motion.section>
   </motion.div>
 
-  <motion.div initial={reducedMotion?false:'hidden'} animate="visible" variants={groupVariants} className="grid gap-6 lg:grid-cols-[3fr_2fr]">
-   <motion.section variants={revealVariants} className="nc p-5 md:p-6">
+  <motion.div initial={reducedMotion?false:'hidden'} animate="visible" variants={groupVariants} className="grid min-w-0 gap-6 lg:grid-cols-[3fr_2fr]">
+   <motion.section variants={revealVariants} className="nc min-w-0 p-4 sm:p-5 md:p-6">
     <div className="mb-3 flex items-center justify-between gap-3"><h2 className="font-serif text-2xl">Recent incidents</h2><Link to="/incidents" className="text-xs text-accent hover:underline">View all</Link></div>
     {recentIncidents.length?<motion.ul variants={listVariants} initial={reducedMotion?false:'hidden'} animate="visible" className="divide-y">{recentIncidents.map(event=><motion.li key={event.id} variants={itemVariants}><Link to={`/incidents?q=${encodeURIComponent(event.id)}`} className="flex items-center justify-between gap-4 py-3 text-sm hover:text-accent"><span className="min-w-0 truncate">{event.type}<span className="block truncate font-mono text-xs text-muted">{event.resource}</span></span><span className="shrink-0 font-mono text-accent">{event.risk}</span></Link></motion.li>)}</motion.ul>:<p className="py-8 text-center text-sm text-muted">No incidents to review.</p>}
    </motion.section>
-   <motion.section variants={revealVariants} className="nc p-5 md:p-6">
+   <motion.section variants={revealVariants} className="nc min-w-0 p-4 sm:p-5 md:p-6">
     <h2 className="mb-4 font-serif text-2xl">Event outcomes</h2>
-    <div className="font-serif text-6xl text-accent"><Counter value={flagged}/><span className="ml-2 text-base text-muted">flagged for review</span></div>
+    <div className="font-serif text-5xl text-accent sm:text-6xl"><Counter value={flagged}/><span className="mt-1 block text-base text-muted sm:ml-2 sm:inline">flagged for review</span></div>
     <ul className="mt-6 space-y-3 text-sm">
      {[['Blocked',blocked,'text-bad'],['Flagged',flagged,'text-bronze'],['Allowed',allowed,'text-ok']].map(([label,count,color])=><li key={label as string} className="flex justify-between border-b pb-2"><span>{label}</span><span className={`font-mono ${color}`}>{count}</span></li>)}
     </ul>
